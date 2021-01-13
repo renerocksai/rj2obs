@@ -34,6 +34,7 @@ created: YYYY-MM-DD
           line 2
         * next block
 ```
+*
     * becomes:
 ```markdown
         * line 1
