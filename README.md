@@ -45,3 +45,18 @@ created: YYYY-MM-DD
 **Note:** Please run Obsidian's Markdown importer after this conversion. It will fix #tag links and formattings (todo syntax, highlights, etc).
 
 I might make it more user friendly and less hardcoded later. It did the job, though.
+
+# Install
+No need to install. But you need python3. Google is your friend. 
+
+To install the required python packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+# Usage:
+```bash
+python r2o.py my-roam-export.json
+```
+
