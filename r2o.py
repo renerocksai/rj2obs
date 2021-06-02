@@ -56,6 +56,7 @@ def replace_blockrefs(s, uid2block, referenced_uids):
             uid = m.group(2)
             if uid not in uid2block:
                 print('************** uid not found:', uid)
+                break
             else:
                 referenced_uids.add(uid)
                 head = new_s[:m.start(1)]
@@ -119,7 +120,10 @@ pages = []
 
 for page in tqdm(j):
     title = page['title']
-    created = page.get('create-time', page['edit-time'])
+    if 'edit-time' in page.keys():
+        created = page.get('create-time', page['edit-time'])
+    else:
+        created = page.get('create-time', page['children'][0]['edit-time'])
     created = datetime.fromtimestamp(created/1000).isoformat()[:10]
     children = page.get('children', [])
 
