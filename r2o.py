@@ -119,9 +119,9 @@ pages = []
 
 for page in tqdm(j):
     title = page['title']
-    created = page.get('create-time', page['edit-time'])
+    created = page.get('create-time') or page['edit-time']
     created = datetime.fromtimestamp(created/1000).isoformat()[:10]
-    children = page.get('children', [])
+    children = page.get('children') or []
 
     is_daily = False
     m = re_daily.match(title)
