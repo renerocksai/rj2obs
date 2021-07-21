@@ -101,6 +101,7 @@ def expand_children(block, uid2block, referenced_uids, level=0):
             new_s = s[:-1]
             new_s = new_s.replace('\n', '\n'+prefix)
             new_s += s[-1]
+            new_s = new_s[:-3] + '\n'+prefix + new_s[-3:] if not s.startswith('```') else s # move closing backticks (```) of code block to new line
             s = new_s + '\n'
 
         if not s.startswith('```'):
