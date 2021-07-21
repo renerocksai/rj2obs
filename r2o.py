@@ -61,8 +61,9 @@ def replace_blockrefs(s, uid2block, referenced_uids):
                 head = new_s[:m.start(1)]
                 r_block = uid2block[uid]
                 # shall we replace with the text or the link or both
-                replacement = r_block['string']
-                replacement += f' [[{r_block["page"]["title"]}#^{r_block["uid"]}]]'
+                replacement = ""
+                # replacement = r_block['string']
+                replacement += f' ![[{r_block["page"]["title"]}#^{r_block["uid"]}]]'
                 tail = new_s[m.end(3):]
                 new_s = head + replacement + tail
     return replace_daylinks(new_s)
