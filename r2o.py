@@ -96,6 +96,7 @@ def expand_children(block, uid2block, referenced_uids, level=0):
         # b id magic
         s = prefix + replace_blockrefs(s, uid2block, referenced_uids) + postfix
         if '\n' in s:
+            prefix = prefix.replace("*", " ") if not s.startswith('```') else prefix
             new_s = s[:-1]
             new_s = new_s.replace('\n', '\n'+prefix)
             new_s += s[-1]
