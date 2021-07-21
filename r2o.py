@@ -63,7 +63,7 @@ def replace_blockrefs(s, uid2block, referenced_uids):
                 # shall we replace with the text or the link or both
                 replacement = ""
                 # replacement = r_block['string']
-                replacement += f' ![[{r_block["page"]["title"]}#^{r_block["uid"]}]]'
+                replacement += f' ![[{r_block["page"]["title"]}#^{r_block["uid"].replace("_", "-")}]]'
                 tail = new_s[m.end(3):]
                 new_s = head + replacement + tail
     return replace_daylinks(new_s)
@@ -76,7 +76,7 @@ def expand_children(block, uid2block, referenced_uids, level=0):
         if level >= 1:
             prefix = '    ' * level
         s = b['string']
-        children = b.get('children', None)
+        children = b.get('children', [])
 
         headinglevel = b.get('heading', None)
         if headinglevel is not None:
@@ -89,7 +89,7 @@ def expand_children(block, uid2block, referenced_uids, level=0):
 
         uid = b['uid']
         if uid in referenced_uids:
-            postfix = f' ^{uid}'
+            postfix = f' ^{uid.replace("_", "-")}'
         else:
             postfix = ''
 
