@@ -18,6 +18,7 @@ re_daylink = re.compile(r'(\[\[)([January|February|March|April|May|June|July|Aug
 re_blockmentions = re.compile(r'({{mentions: \(\()(.{9})(\)\)}})')
 re_blockembed = re.compile(r'({{embed: \(\()(.{9})(\)\)}})')
 re_blockref = re.compile(r'(\(\()(.{9})(\)\))')
+re_HTML = re.compile('<.*?>')
 
 def scan(jdict, page):
     u2b = {jdict['uid']: jdict}
@@ -102,6 +103,11 @@ def expand_children(block, uid2block, referenced_uids, level=0):
             new_s += s[-1]
             s = new_s + '\n'
 
+        if not s.startswith('```'):
+            # \g<0> stands for whole match - so we're adding backtick (`) as suffix and prefix for whole match
+            # reference: https://docs.python.org/3/library/re.html#re.sub
+            # \g<0> instead of \0 - reference: https://stackoverflow.com/q/58134893/6908282
+            s = re.sub(re_HTML, r'`\g<0>`', s)
         lines.append(s)
         lines.extend(expand_children(b, uid2block, referenced_uids, level + 1))
     return lines
