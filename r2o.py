@@ -15,12 +15,11 @@ created: {created}
 
 """
 
-re_daily = re.compile(
-    r"(January|February|March|April|May|June|July|August|September|October|November|December) ([0-9]+)[a-z]{2}, ([0-9]{4})"
-)
-re_daylink = re.compile(
-    r"(\[\[)([January|February|March|April|May|June|July|August|September|October|November|December [0-9]+[a-z]{2}, [0-9]{4})(\]\])"
-)
+months = r"January|February|March|April|May|June|July|August|September|October|November|December"
+
+# fr"() is a combination of f-string and raw strings
+re_daily = re.compile(fr"({months}) ([0-9]+)[a-z]{2}, ([0-9]{4})")
+re_daylink = re.compile(fr"(\[\[)([{months} [0-9]+[a-z]{2}, [0-9]{4})(\]\])")
 re_blockmentions = re.compile(r"({{mentions: \(\()(.{9})(\)\)}})")
 re_blockembed = re.compile(r"({{embed: \(\()(.{9})(\)\)}})")
 re_blockref = re.compile(r"(\(\()(.{9})(\)\))")
