@@ -1,3 +1,5 @@
+# Save Roam JSON Export file in same folder and run following code in terminal `python r2o.py my-roam-export.json`
+
 import sys
 import os
 import json
@@ -18,7 +20,8 @@ re_daylink = re.compile(r'(\[\[)([January|February|March|April|May|June|July|Aug
 re_blockmentions = re.compile(r'({{mentions: \(\()(.{9})(\)\)}})')
 re_blockembed = re.compile(r'({{embed: \(\()(.{9})(\)\)}})')
 re_blockref = re.compile(r'(\(\()(.{9})(\)\))')
-re_HTML = re.compile('<.*?>')
+re_HTML = re.compile('(?<!`)<(?!\s).+?>(?!`)')
+# Reference to above Regex: https://regex101.com/r/BVWwGK/9
 
 def scan(jdict, page):
     u2b = {jdict['uid']: jdict}
@@ -27,6 +30,14 @@ def scan(jdict, page):
         u2b.update(scan(child, page))
     return u2b
 
+def fence_HTMLtags(string):
+    # Reference: https://regex101.com/r/BVWwGK/9
+    if not string.startswith('```'):
+        # \g<0> stands for whole match - so we're adding backtick (`) as suffix and prefix for whole match
+        # reference: https://docs.python.org/3/library/re.html#re.sub
+        # \g<0> instead of \0 - reference: https://stackoverflow.com/q/58134893/6908282
+        string = re.sub(re_HTML, r'`\g<0>`', string)
+    return string
 
 def replace_daylinks(s):
     new_s = s
@@ -104,11 +115,7 @@ def expand_children(block, uid2block, referenced_uids, level=0):
             new_s = new_s[:-3] + '\n'+prefix + new_s[-3:] if not s.startswith('```') else s # move closing backticks (```) of code block to new line
             s = new_s + '\n'
 
-        if not s.startswith('```'):
-            # \g<0> stands for whole match - so we're adding backtick (`) as suffix and prefix for whole match
-            # reference: https://docs.python.org/3/library/re.html#re.sub
-            # \g<0> instead of \0 - reference: https://stackoverflow.com/q/58134893/6908282
-            s = re.sub(re_HTML, r'`\g<0>`', s)
+        s = fence_HTMLtags(s)
         lines.append(s)
         lines.extend(expand_children(b, uid2block, referenced_uids, level + 1))
     return lines

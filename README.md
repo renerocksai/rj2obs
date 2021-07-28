@@ -3,7 +3,7 @@
 This is a forked repository from [renerocksai/rj2obs](https://github.com/renerocksai/rj2obs) with few more **additional features**:
 
 * Convert code-blocks into proper markdown code-blocks
-* enclose any html tags in backtics so that they are not rendered by obsidian
+* enclose any html tags in backtics so that they are not rendered by obsidian - eg: `` `<br>` ``
 * replace any underscore(`_`) in the UID of a block with hyphen(-) as obsidian doesn't support "`_`" in UID
 * Preview Block-Refs by default
     * I have a custom CSS snippet for my Obsidian vault, that style the block-refs to look similar to Roam Research
