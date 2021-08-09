@@ -18,13 +18,14 @@ created: {created}
 months = r"January|February|March|April|May|June|July|August|September|October|November|December"
 
 # fr"() is a combination of f-string and raw strings
-re_daily = re.compile(fr"({months}) ([0-9]+)[a-z]{2}, ([0-9]{4})")
-re_daylink = re.compile(fr"(\[\[)([{months} [0-9]+[a-z]{2}, [0-9]{4})(\]\])")
+# escape literal braces in f-string: https://stackoverflow.com/a/5466478/6908282
+re_daily = re.compile(fr"({months}) ([0-9]+)[a-z]{{2}}, ([0-9]{{4}})")
+re_daylink = re.compile(fr"(\[\[)([{months} [0-9]+[a-z]{{2}}, [0-9]{{4}})(\]\])")
 re_blockmentions = re.compile(r"({{mentions: \(\()(.{9})(\)\)}})")
 re_blockembed = re.compile(r"({{embed: \(\()(.{9})(\)\)}})")
 re_blockref = re.compile(r"(\(\()(.{9})(\)\))")
-re_HTML = re.compile("(?<!`)<(?!\s).+?>(?!`)")
-# Reference to above Regex: https://regex101.com/r/BVWwGK/9
+re_HTML = re.compile("(?<!`)<(?!\s|-).+?>(?!`)")
+# Reference to above Regex: https://regex101.com/r/BVWwGK/10
 
 
 def scan(jdict, page):
@@ -36,7 +37,7 @@ def scan(jdict, page):
 
 
 def fence_HTMLtags(string):
-    # Reference: https://regex101.com/r/BVWwGK/9
+    # Reference: https://regex101.com/r/BVWwGK/10
     if not string.startswith("```"):
         # \g<0> stands for whole match - so we're adding backtick (`) as suffix and prefix for whole match
         # reference: https://docs.python.org/3/library/re.html#re.sub
